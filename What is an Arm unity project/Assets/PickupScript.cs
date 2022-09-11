@@ -6,12 +6,12 @@ using UnityEngine;
 public class PickupScript : MonoBehaviour
 {
     private void Start() {
-        ScoreController.s.RegisterPickup();
+        GameMaster.s.RegisterPickup();
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
-            ScoreController.s.PickupCollected(gameObject);
+            GameMaster.s.PickupCollected(gameObject);
         }
     }
 }

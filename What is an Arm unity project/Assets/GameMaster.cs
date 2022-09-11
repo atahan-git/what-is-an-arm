@@ -5,10 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScoreController : MonoBehaviour {
+public class GameMaster : MonoBehaviour {
 
 
-    public static ScoreController s;
+    public static GameMaster s;
 
     public int curScore;
     public int totalAmount = 10;
