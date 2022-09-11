@@ -7,14 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
 
-
     public static GameMaster s;
 
-    public int curScore;
-    public int totalAmount = 10;
-    public TMP_Text scoreText;
-    public GameObject winText;
-    public TMP_Text winTime;
+    public TMP_Text endText;
+    public TMP_Text endTime;
     public GameObject restartButton;
     public GameObject startButton;
 
@@ -27,29 +23,22 @@ public class GameMaster : MonoBehaviour {
 
     private void Awake() {
         s = this;
-        totalAmount = 0;
-        curScore = 0;
-    }
-
-    public void RegisterPickup() {
-        totalAmount += 1;
-        UpdateScore();
     }
 
     // Start is called before the first frame update
     void Start() {
         isGameInProgress = false;
         curTime = 0;
-        UpdateScore();
         restartButton.SetActive(false);
-        winText.SetActive(false);
-        winTime.gameObject.SetActive(false);
+        endText.gameObject.SetActive(false);
+        endTime.gameObject.SetActive(false);
         startButton.SetActive(true);
         timeText.gameObject.SetActive(false);
-        scoreText.gameObject.SetActive(false);
     }
 
     private void Update() {
+        if (FindObjectOfType<enemyAI> == null) ;
+        }
         if (isGameInProgress) {
             curTime += Time.deltaTime;
         }
@@ -57,52 +46,31 @@ public class GameMaster : MonoBehaviour {
         TimeSpan t = TimeSpan.FromSeconds(curTime);
         string nicelyFormatted = $"Time: {t.Minutes:D2}:{t.Seconds:D2}:{t.Milliseconds:D4}";
         timeText.text = nicelyFormatted;
-    }
-
-    public void PickupCollected(GameObject source) {
-        Destroy(Instantiate(collectPrefab, source.transform.position, Quaternion.identity), 10f);
-        Destroy(source);
-
-        curScore += 1;
-        UpdateScore();
-    }
-
-    void UpdateScore() {
-        scoreText.text = $"Score: {curScore}/{totalAmount}";
-        if (totalAmount > 0) {
-            if (curScore >= totalAmount) {
-                winText.SetActive(true);
-                winTime.gameObject.SetActive(true);
-                timeText.gameObject.SetActive(false);
-
-                TimeSpan t = TimeSpan.FromSeconds(curTime);
-                string nicelyFormatted = $"Time: {t.Minutes:D2}:{t.Seconds:D2}:{t.Milliseconds:D4}";
-                winTime.text = nicelyFormatted;
-                Invoke(nameof(EnableRestart), 0.5f);
-            }
-        }
-    }
-
-    void EnableRestart() {
-        restartButton.SetActive(true);
+        FindObjectOfType<
     }
 
     public void StartGame() {
         startButton.SetActive(false);
         timeText.gameObject.SetActive(true);
-        scoreText.gameObject.SetActive(true);
         isGameInProgress = true;
     }
 
     public void RestartGame() {
         isGameInProgress = false;
         restartButton.SetActive(false);
-        winText.SetActive(false);
-        winTime.gameObject.SetActive(false);
+        endText.gameObject.SetActive(false);
+        endTime.gameObject.SetActive(false);
         startButton.SetActive(false);
         timeText.gameObject.SetActive(false);
-        scoreText.gameObject.SetActive(false);
 
         SceneManager.LoadScene(0);
+    }
+
+    public void EndGame(bool winstate) {
+        endText.gameObject.SetActive(winstate);
+        endText.text = winstate ? "You Win!" : "You Lost!";
+        endTime.text = timeText.text;
+        endTime.gameObject.SetActive(true);
+        restartButton.SetActive(true);
     }
 }

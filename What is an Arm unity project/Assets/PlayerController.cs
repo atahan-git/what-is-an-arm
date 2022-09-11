@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     public Transform viewAxis;
     public Transform guy;
+    public static PlayerController s;
     public float rotationMatchSpeed = 20;
     
     [Tooltip("Maximum slope the character can jump on")]
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour {
     
     private void Awake()
     {
+        s = this;
         rigidbody = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
