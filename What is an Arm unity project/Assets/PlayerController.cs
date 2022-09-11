@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void MatchRotation() {
-        if (MovementInput.sqrMagnitude > 0.1f) {
+        if (MovementInput.sqrMagnitude > 0.01f) {
             guy.rotation = Quaternion.Lerp(guy.rotation, Quaternion.LookRotation(MovementInput), rotationMatchSpeed * Time.deltaTime);
         }
     }
